@@ -1,5 +1,4 @@
 <?php
-// PHP Niz sa svim državama svijeta abecednim redom
 $drzave = [
     "AF" => "Afganistan", "AL" => "Albanija", "DZ" => "Alžir", "AS" => "Američka Samoa", "AD" => "Andora", 
     "AO" => "Angola", "AI" => "Angvila", "AQ" => "Antarktika", "AG" => "Antigva i Barbuda", "AR" => "Argentina", 
