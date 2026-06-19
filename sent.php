@@ -8,12 +8,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $datum = date("d.m.Y. H:i");
     $id = uniqid();
 
-    // Zapisuje u tekstualnu datoteku
     $jedna_linija = $id . "|" . $datum . "|" . $ime . "|" . $prezime . "|" . $email . "|" . $drzava . "|" . str_replace("\n", " ", $poruka) . "\n";
     file_put_contents("poruke.txt", $jedna_linija, FILE_APPEND);
 
-    // Iskače obavijest i vraća te nazad na kontakt formu (menu=3)
-    // Iskače obavijest i vraća te nazad na kontakt formu
     echo "<script>
             alert('Poruka uspješno poslana!');
             window.location.href = 'index.php?menu=6';
