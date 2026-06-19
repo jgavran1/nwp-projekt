@@ -1,5 +1,4 @@
 <?php
-    # Zaštita od izravnog pristupa datoteci
     if(!defined('__APP__')) {
         die("Hacking attempt");
     }
@@ -43,10 +42,8 @@
 ?>
 
 <div style="padding: 20px; font-family: sans-serif; max-width: 450px; margin: 0 auto; background: #eeeeee; border-radius: 8px;">
-    <!-- Naslov u plavoj boji kao na snimci -->
     <h2 style="color: #2b358a; margin-top: 0; text-align: center;">Registracija novog računa</h2>
     
-    <!-- Linija je sada plava, ne crvena -->
     <hr style="border: 1px solid #2b358a; margin-bottom: 25px; width: 80%;">
 
     <?php if (!empty($error)): ?>
@@ -84,7 +81,6 @@
             <input type="password" name="admin_password" id="adminInput" style="width:100%; padding:8px; border:1px solid #2b358a; border-radius: 4px;">
         </div>
 
-        <!-- Gumb je sada crn s plavim rubom -->
         <input type="submit" value="Registriraj se" style="background: #000000; color: #ffffff; padding: 12px 15px; border: 2px solid #2b358a; cursor: pointer; border-radius: 4px; font-weight: bold; width: 100%; font-size: 16px;">
     </form>
 </div>
