@@ -1,24 +1,19 @@
 <?php
-    # Zaštita od izravnog pristupa datoteci
     if(!defined('__APP__')) {
         die("Hacking attempt");
     }
 
-    # Spajanje na bazu podataka
     include_once("dbconn.php");
 
-    # --- 1. AKCIJA: BRISANJE KORISNIKA ---
     if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id'])) {
         $id = (int)$_GET['id'];
         $query = "DELETE FROM users WHERE id = $id";
         mysqli_query($MySQL, $query);
         
-        # Osvježi stranicu nakon brisanja i ostani na tabu korisnika
         header("Location: index.php?menu=10&tab=users");
         exit;
     }
 
-    # --- 2. AKCIJA: SPREMANJE UREĐENIH PODATAKA KORISNIKA (UPDATE) ---
     if (isset($_POST['_action_']) && $_POST['_action_'] == 'edit_user') {
         $id = (int)$_POST['id'];
         $username = mysqli_real_escape_string($MySQL, $_POST['username']);
@@ -27,12 +22,10 @@
         $query = "UPDATE users SET username='$username', email='$email' WHERE id=$id";
         mysqli_query($MySQL, $query);
         
-        # Vrati se natrag na tablicu korisnika
         header("Location: index.php?menu=10&tab=users");
         exit;
     }
 
-    # --- 3. AKCIJA: BRISANJE PORUKE IZ DATOTEKE ---
     if (isset($_GET['action']) && $_GET['action'] == 'delete_message' && isset($_GET['msg_id'])) {
         $id_za_brisanje = $_GET['msg_id'];
         if (file_exists("poruke.txt")) {
@@ -47,24 +40,20 @@
             }
             file_put_contents("poruke.txt", $novi_sadrzaj);
         }
-        # Vrati se natrag na tablicu poruka
         header("Location: index.php?menu=10&tab=messages");
         exit;
     }
 
-    # Određivanje koji je tab trenutno aktivan (Korisnici su zadani)
     $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'users';
 
     echo '<div style="padding: 20px; font-family: sans-serif;">';
     echo '<h2>Administracijski Panel</h2>';
 
-    # --- MINI IZBORNIK ZA ADMINA (Tabovi na vrhu) ---
     echo '<div style="margin-bottom: 20px; border-bottom: 2px solid #2b358a; padding-bottom: 10px;">';
     echo '<a href="index.php?menu=10&tab=users" style="padding: 10px 20px; text-decoration: none; font-weight: bold; color: ' . ($active_tab == 'users' ? 'white' : '#2b358a') . '; background: ' . ($active_tab == 'users' ? '#2b358a' : '#f1f1f1') . '; border-radius: 4px 4px 0 0; margin-right: 5px;">Korisnici</a>';
     echo '<a href="index.php?menu=10&tab=messages" style="padding: 10px 20px; text-decoration: none; font-weight: bold; color: ' . ($active_tab == 'messages' ? 'white' : '#2b358a') . '; background: ' . ($active_tab == 'messages' ? '#2b358a' : '#f1f1f1') . '; border-radius: 4px 4px 0 0;">Poruke s kontakta</a>';
     echo '</div>';
 
-    # Zajednički CSS stilovi za tablice unutar admina (tvoj dizajn)
     ?>
     <style>
         .admin-table {
@@ -110,10 +99,8 @@
     </style>
     <?php
 
-    # ------------------ PRIKAZ A: KORISNICI ------------------
     if ($active_tab == 'users') {
         
-        # PRIKAZ FORME ZA UREĐIVANJE KORISNIKA (Ako je kliknut 'Update')
         if (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['id'])) {
             $id = (int)$_GET['id'];
             $query = "SELECT * FROM users WHERE id = $id";
@@ -141,7 +128,6 @@
                 <?php
             }
         } else {
-            # GLAVNA TABLICA KORISNIKA
             ?>
             <table class="admin-table">
                 <thead>
@@ -175,7 +161,6 @@
         }
     }
 
-    # ------------------ PRIKAZ B: PORUKE S KONTAKTA ------------------
     if ($active_tab == 'messages') {
         if (file_exists("poruke.txt") && filesize("poruke.txt") > 0) {
             $sve_poruke = file("poruke.txt");
