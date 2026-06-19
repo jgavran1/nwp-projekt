@@ -1,5 +1,4 @@
 <?php
-    # Zaštita od izravnog pristupa datoteci
     if(!defined('__APP__')) {
         die("Hacking attempt");
     }
@@ -8,37 +7,30 @@
 
     $error = "";
 
-    # Ako je korisnik stisnuo gumb "Prijavi se"
     if (isset($_POST['_action_']) && $_POST['_action_'] == 'signin') {
         $username = mysqli_real_escape_string($MySQL, $_POST['username']);
         $password = $_POST['password'];
         
-        # Pretvaramo unesenu lozinku u MD5 format da odgovara onoj u bazi
         $hashed_password = md5($password);
         
-        # Tražimo korisnika s tim imenom i točnom lozinkom
         $query  = "SELECT * FROM users WHERE username='$username' AND password='$hashed_password'";
         $result = mysqli_query($MySQL, $query);
         
         if (mysqli_num_rows($result) == 1) {
             $row = mysqli_fetch_assoc($result);
             
-            # Pokretanje i postavljanje sesije (podaci o prijavljenom korisniku)
             $_SESSION['user']['valid'] = 'true';
             $_SESSION['user']['id'] = $row['id'];
             $_SESSION['user']['username'] = $row['username'];
             
-            # KLJUČNO: Spremanje uloge (user/admin) u sesiju
             $_SESSION['user']['role'] = $row['role']; 
             
-            # Postavljanje imena za poruku dobrodošlice (ako postoje stupci u bazi, inače koristi username)
             if (isset($row['first_name']) && isset($row['last_name'])) {
                 $_SESSION['user']['fullname'] = $row['first_name'] . ' ' . $row['last_name'];
             } else {
                 $_SESSION['user']['fullname'] = $row['username'];
             }
             
-            # Poruka o uspjehu i automatsko preusmjeravanje
             echo '<meta http-equiv="refresh" content="0; URL=index.php?menu=1">';
             exit;
         } else {
